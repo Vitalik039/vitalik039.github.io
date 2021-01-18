@@ -6,4 +6,38 @@
 body{
 	background: #f9f9f9;
 	font-family: 'Roboto', sans-serif;
+	
+}
+
+.game-balanc{
+	font-size: 14px;
+	text-align: center;
+	color: #696969;
+	margin-top: 5px;
+}
+
+.game-balanc-item{ display: flex; }
+.game-button-items{ display: flex; }
+
+.game-balanc-item img{
+	height: 28px;
+	margin-top: 3px;
+}
+
+.game-button{
+	margin-left: 20px;
+}
+
+.game-button button{
+	width: 120px;
+	height: 80px;
+	margin-bottom: 5px;
+}
+
+.game-button button img{
+	height: 100%;
+}
+
+.game-button-text{
+	text-align:center;
 }
