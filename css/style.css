@@ -9,6 +9,8 @@ body{
 	
 }
 
+.h4{ text-align:center; margin-bottom: 10px }
+
 .game-balanc{
 	font-size: 14px;
 	text-align: center;
@@ -16,15 +18,24 @@ body{
 	margin-top: 5px;
 }
 
-.game-balanc-item{ display: flex; }
-.game-button-items{ display: flex; }
+.game-balanc-item{ 
+	display: flex; 
+	justify-content: center; 
+	margin-bottom: 10px; 
+}
+
+.game-button-items{
+	display: flex; 
+	justify-content: center;
+	margin-bottom: 10px;
+}
 
 .game-balanc-item img{
 	height: 28px;
 	margin-top: 3px;
 }
 
-.game-button{
+.game-button + .game-button{
 	margin-left: 20px;
 }
 
@@ -40,4 +51,17 @@ body{
 
 .game-button-text{
 	text-align:center;
+}
+
+.mining{
+	text-align:center;
+}
+
+.mining button{
+	width: 200px;
+	height: 200px;
+}
+
+.mining button img{
+	height: 100%;
 }
