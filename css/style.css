@@ -9,7 +9,9 @@ body{
 	
 }
 
-.h4{ text-align:center; margin-bottom: 10px }
+.h4{ text-align:center; margin-bottom: 10px; color: #696969; font-weight: 400; }
+
+.auto-money{ display: flex; justify-content: center; }
 
 .game-balanc{
 	font-size: 14px;
@@ -43,6 +45,36 @@ body{
 	width: 120px;
 	height: 80px;
 	margin-bottom: 5px;
+	border: none;
+	outline: none;
+	border-radius: 7px;
+}
+
+.game-button-top{
+	background-image: linear-gradient(-180deg,#fea572,#f7785f);
+	box-shadow: 0 2px 8px 0 rgba(248,123,96,.45);
+}
+
+.game-button-top:active{
+	background: #FBAF83;
+}
+
+.game-button-money{
+	background-image: linear-gradient(-180deg,#ae6ef9,#783ddc 99%);
+	box-shadow: 0 2px 8px 0 rgba(124,64,222,.4);
+}
+
+.game-button-money:active{
+	background: #BA92E7;
+}
+
+.game-button-market{
+	background-image: linear-gradient(-180deg,#fa6bad,#e748a3 97%);
+	    box-shadow: 0 2px 8px 0 rgba(240,74,169,.45);
+}
+
+.game-button-market:active{
+	background: #EC93BC;
 }
 
 .game-button button img{
@@ -60,8 +92,16 @@ body{
 .mining button{
 	width: 200px;
 	height: 200px;
+	background: #EE8208;
+	outline: none;
+	border: none;
+	border-radius: 50%;
+}
+
+.mining button:active{
+	background: #E9A558;
 }
 
 .mining button img{
-	height: 100%;
+	height: 60%;
 }
