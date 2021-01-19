@@ -1,6 +1,11 @@
-var score = 0;
-var updating = 1;
-function clickBtn() {
-score = score + updating;
-document.getElementsByTagName("h1")[0].firstChild.data = score + "$";
-}
+let users = {
+	balanc: 0,
+};
+var click = document.getElementById("click"),
+ counter = document.getElementById("block"),
+ count = 0;
+click.onclick = function() {
+ count++;
+ counter.textContent = count;
+ counter.addEventListener('click', () => counter(count, JSON.strigify(users), 'main.json', 'text/plain'));
+};
