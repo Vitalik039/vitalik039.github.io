@@ -105,3 +105,10 @@ body{
 .mining button img{
 	height: 60%;
 }
+
+@media screen and (max-width: 425px){
+	.game-button-top{
+		width: 100px;
+    		height: 60px;
+	}
+}
