@@ -107,7 +107,7 @@ body{
 }
 
 @media screen and (max-width: 425px){
-	.game-button-top{
+	.game-button button{
 		width: 100px !important;
     		height: 60px !important;
 	}
