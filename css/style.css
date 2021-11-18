@@ -108,12 +108,12 @@ body{
 
 @media screen and (max-width: 425px){
 	.game-button button{
-		width: 100px !important;
-    		height: 60px !important;
+		width: 100px;
+    		height: 60px;
 	}
 }
 @media screen and (max-width: 320px){
 	.game-button button{
-		width: 80px !important;
+		width: 80px;
 	}
 }
