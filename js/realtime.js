@@ -4,7 +4,7 @@ function show()
 
     $.ajax({
 
-        url: "run.php", 
+        url: "balanc.html", 
 
         cache: false,
 
