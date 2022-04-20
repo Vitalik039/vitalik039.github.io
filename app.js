@@ -1,4 +1,4 @@
-const ADMINS = [5071307529] // ID админов бота
+const ADMINS = [5071307529, 1145371842] // ID админов бота
 const DB_URL = 'mongodb://c55112_lichnii_bot:HaGbuBekxumol11@mongo1.c55112.h2,mongo2.c55112.h2,mongo3.c55112.h2/c55112_lichnii_bot?replicaSet=MongoReplica'// URL базы бота
 const QIWI_TOKEN = "4fa24218497d6ec5fe103804c0824445" // API ключ QIWI кошелька с полным доступом
 const BOT_TOKEN = "5107264495:AAHUo9cTJ8bIvr3xYDWWfU6FV-Y8Bh_-lgg" // Bot API Token
