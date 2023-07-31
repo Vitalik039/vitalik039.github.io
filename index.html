@@ -1,10 +1,441 @@
-<!DOCYMENT TYPE>
+<!DOCTYPE html>
 <html>
-  <header>
-    <meta charset="utf-8">
-    <title>Github Pages</title>
-  </header>
-  <body>
-    777
-  </body>
+    <head>
+        <title>Page Title</title>
+    </head>
+    <body>
+        <div class="loader">
+            <div></div>
+        </div>
+        <section class="chat">
+            <div class="chat__box">
+                <div class="chat__area">
+                    <div class="no__message">Сообщения недоступны. Как только вы отправите сообщение, они появятся здесь.</div>
+                  <!-- Message Outgoing
+                   <div class="chat__message outgoing">
+                       <b>ID: 999999</b>
+                        <div class="details" onclick="context_menu()">
+                            <p>Hello</p>
+                        </div>
+                    </div>
+                 <!-- Message Incoming
+                    <div class="chat__message incoming">
+                        <b>ID: 999999</b>
+                        <div class="details" onclick="context_menu()">
+                            <p>Hello</p>
+                        </div>
+                    </div>
+                    -->
+                    <div class="audio" id="audio"></div>
+                </div>
+                <div class="chat__control">
+                    <button id="attachment" onclick="attachment_menu()">
+                        <i class="fa fa-paperclip"></i>
+                    </button>
+                    <input type="text" name="message" id="message" placeholder="Введите сообщение здесь..." autocomplete="off">
+                    <div id="recording__info">Запись...</div>
+                    <button id="microphone">
+                        <i class="fa fa-microphone"></i>
+                    </button>
+                    <button class="send">
+                        <img src="https://dragonserfing.ru/images/chat/send.svg">
+                    </button>
+                </div>
+            </div>
+        </section>
+        <div class="hover"></div>
+        <script type=text/javascript src="https://code.jquery.com/jquery-1.11.2.js"></script>
+        <script src="https://kit.fontawesome.com/e383c84e15.js" crossorigin="anonymous"></script>
+        <script>
+
+$(window).on('load',function(){
+    $(".loader").fadeOut(5000);
+    $(".chat").fadeIn(5000);
+})
+
+const send = document.querySelector(".send"),
+message = document.querySelector("#message"),
+chat__area = document.querySelector(".chat__area"),
+chat__control = document.querySelector(".chat__control");
+
+const random_id = Math.floor(Math.random() * (999999999 - 111111111 + 1)) + 111111111;
+
+//alert("Ваш ID: "+random_id);
+let user = {
+    user_id: random_id
+}
+
+if(chat__area.innerHTML.trim().length != 0){
+    $(".no__message").css("display", "block");
+}
+
+$("#microphone").click(function(){
+
+    var device = navigator.mediaDevices.getUserMedia({audio: true});
+    var items = [];
+    device.then( stream => {
+        var recorder = new MediaRecorder(stream);
+        recorder.ondataavailable = e => {
+            items.push(e.data);
+            if(recorder.state == 'inactive')
+            {
+                var blob = new Blob(items, {type: 'audio/webm'});
+                var audio = document.getElementById('audio');
+                var mainaudio = document.createElement('audio');
+                mainaudio.setAttribute('controls', 'controls');
+                audio.appendChild(mainaudio);
+                mainaudio.innerHTML = '<source src="'+URL.createObjectURL(blob)+'" type="video/webm"/>';
+            }
+        }
+        recorder.start(100);
+        setTimeout(() => {
+            recorder.stop();
+        }, 5000);
+    })
+
+    $("#message").toggle("hide");
+    if($("#microphone").hasClass("active")){
+        $("#microphone").removeClass("active");
+        $("#recording__info").removeClass("active");
+    }else{
+        $("#microphone").addClass("active");
+        $("#recording__info").addClass("active");
+    }
+    
+})
+
+var id_message = 1;
+var node_message = 1;
+
+send.onclick = function(){
+    //alert("Message: "+message.value)
+    const text__answer = $(".to__answer-details p").html();
+    const id_user_answer = $(".to__answer-details b span").html();
+    
+    if(message.value != ""){
+        if($(".chat__area").find(".to__answer").length > 0){
+            chat__area.innerHTML += `
+    
+<div id="id_message_${node_message++}" class='chat__message outgoing'>
+                        <b>ID: <span>${user.user_id}</span></b>
+                        <div class='details' onclick='context_menu("${id_message++}")'>
+                            <div class="message_to_answer">
+                                <b>ID: ${id_user_answer}</b>
+                                <p>${text__answer}</p>
+                            </div>
+                            <p>${message.value}</p>
+                        </div>
+                        <input type="hidden" id="text_copy_message" value="${message.value}">
+                    </div>
+
+            `;
+            
+            remove_to_answer();
+        }else{
+            if($(".chat__area").find(".edit__message").length > 0){
+                const edit__message = document.querySelector(".edit__message");
+                const id_edit_message = document.querySelector(".id_edit_message");
+                const text_message = $("#id_message_"+id_edit_message.value+" .details p").html();
+                
+ edit__message.parentNode.removeChild(edit__message);
+                text_message.html = message.value;
+            }else{
+            chat__area.innerHTML += `
+    
+<div id="id_message_${node_message++}" class='chat__message outgoing'>
+                        <b>ID: <span>${user.user_id}</span></b>
+                        <div class='details' onclick='context_menu("${id_message++}")'>
+                            <p>${message.value}</p>
+                        </div>
+                        <input type="hidden" id="text_copy_message" value="${message.value}">
+                    </div>
+            `;
+            }
+        }
+        message.value = "";
+        
+        $(".no__message").css("display", "none");
+        
+    }else{
+        alert("Поле для сообщения пустое!");
+    }
+}
+
+message.addEventListener("keydown", function(e){
+    if(e.keyCode === 13){
+        //alert("Message: "+message.value)
+        const text__answer = $(".to__answer-details p").html();
+        const id_user_answer = $(".to__answer-details b span").html();
+        
+        if(message.value != ""){
+            if($(".chat__area").find(".to__answer").length > 0){
+               chat__area.innerHTML += `
+           
+<div id="id_message_${node_message++}" class='chat__message incoming'>
+                        <b>ID: <span>${user.user_id}</span></b>
+                        <div class='details' onclick='context_menu("${id_message++}")'>
+                            <div class="message_to_answer">
+                                <b>ID: ${id_user_answer}</b>
+                                <p>${text__answer}</p>
+                            </div>
+                            <p>${message.value}</p>
+                        </div>
+                        <input type="hidden" id="text_copy_message" value="${message.value}">
+                    </div>
+           
+               `;
+               
+               remove_to_answer();
+            }else{
+                chat__area.innerHTML += `
+           
+<div id="id_message_${node_message++}" class='chat__message incoming'>
+                        <b>ID: <span>${user.user_id}</span></b>
+                        <div class='details' onclick='context_menu("${id_message++}")'>
+                            <p>${message.value}</p>
+                        </div>
+                        <input type="hidden" id="text_copy_message" value="${message.value}">
+                    </div>
+        
+               `;
+            }
+            
+            message.value = "";
+            
+            $(".no__message").css("display", "none");
+            
+        }else{
+            alert("Поле для сообщения пустое!");
+        }
+    }
+})
+
+function context_menu(id){
+    const node_element = document.querySelector(".chat__area #id_message_"+id+" .details");
+    
+    node_element.classList.add("active");
+    $(".hover").css("display","block");
+    
+    if($(".chat__area").find(".context__menu").length > 0){
+        remove_context_menu();
+    }
+    
+    chat__area.innerHTML += `
+<div class="context__menu">
+    <ul>
+        <li onclick="edit_message('${id}')">
+            <div class="context__menu-details">
+                <div class="menu__icon">
+                    <i class="fa fa-edit"></i>
+                </div>
+                <span>Редактировать</span>
+            </div>
+        </li>
+        <li onclick="to_answer_message('${id}')">
+            <div class="context__menu-details">
+                <div class="menu__icon">
+                    <i class="fa fa-arrow-left"></i>
+                </div>
+                <span>Ответить</span>
+            </div>
+        </li>
+        <li onclick="copy__text('${id}')">
+            <div class="context__menu-details">
+                <div class="menu__icon">
+                    <i class="fa fa-copy"></i>
+                </div>
+                <span>Копировать</span>
+            </div>
+        </li>
+        <li onclick="remove_child('${id}')">
+            <div class="context__menu-details">
+                <div class="menu__icon">
+                    <i class="fa fa-trash"></i>
+                </div>
+                <span>Удалить</span>
+            </div>
+        </li>
+    </ul>
+</div>
+    `;
+}
+
+function edit_message(id){
+    const text_message = $("#id_message_"+id+" .details p").html();
+    
+    if($(".chat__area").find(".edit__message").length > 0){
+        remove_to_answer();
+    }
+    if($(".chat__area").find(".to__answer").length > 0){
+        const to__answer = document.querySelector(".to__answer");
+        to__answer.parentNode.removeChild(to__answer);
+    }
+    
+    chat__area.innerHTML += `
+<div class="edit__message">
+                        <div class="to__answer-items">
+                        <div class="to__answer-details">
+                            <b>${id}</b>
+                            <p>${text_message}</p>
+                        </div>
+                        <div class="to__answer-close">
+                            <button onclick="remove_to_answer()">
+                                &times;
+                            </button>
+                        </div>
+                        </div>
+                        <input type="hidden" class="id_edit_message" value="${id}">
+                    </div>
+    `;
+    
+    $(".context__menu").hide("1000");
+    $(".hover").css("display","none");
+    $("#id_message_"+id+" .details").removeClass("active");
+}
+
+function attachment_menu(){
+
+    if($(".chat__area").find(".attachment__menu").length > 0){
+        remove_attachment_menu();
+    }
+
+    chat__area.innerHTML += `
+<div class="attachment__menu">
+    <ul>
+        <li>
+            <div class="attachment__menu-details">
+                <div class="attachment__icon">
+                    <i class="fa fa-image"></i>
+                </div>
+                <span>Фото</span>
+            </div>
+        </li>
+        <li>
+            <div class="attachment__menu-details">
+                <div class="attachment__icon">
+                    <i class="fa fa-video"></i>
+                </div>
+                <span>Видео</span>
+            </div>
+        </li>
+        <li>
+            <div class="attachment__menu-details">
+                <div class="attachment__icon">
+                    <i class="fa fa-music"></i>
+                </div>
+                <span>Аудио</span>
+            </div>
+        </li>
+        <li>
+            <div class="attachment__menu-details">
+                <div class="attachment__icon">
+                    <i class="fa fa-file"></i>
+                </div>
+                <span>Файл</span>
+            </div>
+        </li>
+    </ul>
+</div>
+    `;
+    $("#attachment").addClass("active");
+}
+
+function to_answer_message(id){
+    const id_user_in_message = $("#id_message_"+id+" b span").html();
+    const text_message = $("#id_message_"+id+" .details p").html();
+    
+    if($(".chat__area").find(".to__answer").length > 0){
+        remove_to_answer();
+    }
+    if($(".chat__area").find(".edit__message").length > 0){
+        const edit__message = document.querySelector(".edit__message");
+        edit__message.parentNode.removeChild(edit__message);
+    }
+    
+    chat__area.innerHTML += `
+<div class="to__answer">
+                        <div class="to__answer-items">
+                        <div class="to__answer-details">
+                            <b>ID: <span>${id_user_in_message}</span></b>
+                            <p>${text_message}</p>
+                        </div>
+                        <div class="to__answer-close">
+                            <button onclick="remove_to_answer()">
+                                &times;
+                            </button>
+                        </div>
+                        </div>
+                    </div>
+    `;
+    
+    $(".context__menu").hide("1000");
+    $(".hover").css("display","none");
+    $("#id_message_"+id+" .details").removeClass("active");
+}
+
+function remove_to_answer(){
+    const to_answer = document.querySelector(".to__answer");
+    const edit__message = document.querySelector(".edit__message");
+    
+   
+   if($(".chat__area").find(".to__answer").length > 0){
+    to_answer.parentNode.removeChild(to_answer);
+    }
+    if($(".chat__area").find(".edit__message").length > 0){
+        edit__message.parentNode.removeChild(edit__message);
+    }
+}
+
+function copy__text(id){
+    const node_element = document.querySelector('#id_message_'+id+'   #text_copy_message');
+    node_element.select();
+    document.execCommand("copy");
+}
+
+function remove_child(id){
+    const node_element = document.querySelector(".chat__area #id_message_"+id);
+    
+    const result = confirm("Вы действительно хотите удалить сообщение?");
+    if(result){
+     node_element.parentNode.removeChild(node_element);
+        $(".context__menu").hide("1000");
+        $(".hover").css("display","none");
+    }
+    
+    if(!document.querySelector(".chat__message")){
+        $(".no__message").css("display","block");
+    }
+}
+
+function remove_context_menu(){
+    const node_element = document.querySelector(".context__menu");
+    
+    node_element.parentNode.removeChild(node_element);
+}
+
+function remove_attachment_menu(){
+    const node_element = document.querySelector(".attachment__menu");
+    
+    node_element.parentNode.removeChild(node_element);
+}
+
+$(document).on("click", function(e){
+    if(!$(e.target).closest(".details").length && !$(e.target).closest(".context__menu").length){
+        if($(".details").hasClass("active")){
+            $(".details").removeClass("active");
+        }
+        $(".context__menu").hide("1000");
+        $(".hover").css("display","none");
+    }
+})
+
+$(document).on("click", function(e){
+    if(!$(e.target).closest("#attachment").length && !$(e.target).closest(".attachment__menu").length){
+        $(".attachment__menu").hide("1000");
+        $("#attachment").removeClass("active");
+    }
+})
+
+        </script>
+    </body>
 </html>
